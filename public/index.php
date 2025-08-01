@@ -11,14 +11,30 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Load config & autoload
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../vendor/autoload.php';
+// Load config & autoload if needed
+if (file_exists(__DIR__ . '/../config/config.php')) {
+    require_once __DIR__ . '/../config/config.php';
+}
 
-// Example: basic routing (adjust based on your project)
-if (isset($_GET['page']) && $_GET['page'] === 'login') {
-    require_once __DIR__ . '/../controllers/AuthController.php';
-} else {
-    require_once __DIR__ . '/../views/home.php';
+// Basic routing (you can expand as needed)
+$page = $_GET['page'] ?? 'home';
+
+switch ($page) {
+    case 'login':
+        if (file_exists(__DIR__ . '/../controllers/AuthController.php')) {
+            require_once __DIR__ . '/../controllers/AuthController.php';
+        } else {
+            echo "<h2>Login controller not found</h2>";
+        }
+        break;
+
+    default:
+        // Load home view
+        if (file_exists(__DIR__ . '/../views/home.php')) {
+            require_once __DIR__ . '/../views/home.php';
+        } else {
+            echo "<h2>Home view not found</h2>";
+        }
+        break;
 }
 ?>
