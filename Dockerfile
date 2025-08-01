@@ -1,4 +1,3 @@
-# Use PHP with Apache
 FROM php:8.2-apache
 
 # Enable required extensions
@@ -7,17 +6,21 @@ RUN docker-php-ext-install pdo pdo_mysql
 # Copy files to web root
 COPY . /var/www/html
 
-# Set working directory
+# Change document root to public folder
 WORKDIR /var/www/html
 
-# Create session directory with full permissions
+# Set Apache document root to public/
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+
+# Update Apache config for the new document root
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Create session folder
 RUN mkdir -p /var/www/html/sessions && chmod 777 /var/www/html/sessions
 
-# Enable Apache mod_rewrite (if needed)
+# Enable mod_rewrite
 RUN a2enmod rewrite
 
-# Expose port 80
 EXPOSE 80
-
-# Start Apache server
 CMD ["apache2-foreground"]
