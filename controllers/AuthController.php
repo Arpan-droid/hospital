@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Hospital.php';
 require_once __DIR__ . '/../models/Doctor.php';
-require_once __DIR__ . '/../helpers/sessions.php';
+require_once __DIR__ . '/../helpers/session.php';
 require_once __DIR__ . '/../helpers/validators.php';
 
 session_start();
