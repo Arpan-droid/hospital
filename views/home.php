@@ -35,21 +35,21 @@
             <div class="card shadow-sm p-3">
                 <h4>🏥 Hospitals</h4>
                 <p>Manage all hospitals in the system.</p>
-                <a href="#" class="btn btn-primary btn-sm">View Hospitals</a>
+                <a href="?page=hospitals" class="btn btn-primary btn-sm">View Hospitals</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card shadow-sm p-3">
                 <h4>👨‍⚕️ Doctors</h4>
                 <p>View and assign doctors to hospitals.</p>
-                <a href="#" class="btn btn-primary btn-sm">View Doctors</a>
+                <a href="?page=doctors" class="btn btn-primary btn-sm">View Doctors</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card shadow-sm p-3">
                 <h4>🧑‍🤝‍🧑 Patients</h4>
                 <p>Track patients and appointments.</p>
-                <a href="#" class="btn btn-primary btn-sm">View Patients</a>
+                <a href="?page=patients" class="btn btn-primary btn-sm">View Patients</a>
             </div>
         </div>
     </div>

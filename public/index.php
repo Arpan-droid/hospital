@@ -1,17 +1,16 @@
 <?php
-// Ensure sessions folder is writable
+// Sessions directory setup
 $sessionPath = __DIR__ . '/../sessions';
 if (!is_dir($sessionPath)) {
     mkdir($sessionPath, 0777, true);
 }
 session_save_path($sessionPath);
 
-// Start session if not active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Load config
+// Load config if exists
 if (file_exists(__DIR__ . '/../config/config.php')) {
     require_once __DIR__ . '/../config/config.php';
 }
@@ -24,9 +23,20 @@ switch ($page) {
         break;
 
     case 'logout':
-        // Log out and redirect
         session_destroy();
         header('Location: /');
+        break;
+
+    case 'hospitals':
+        require_once __DIR__ . '/../views/hospitals.php';
+        break;
+
+    case 'doctors':
+        require_once __DIR__ . '/../views/doctors.php';
+        break;
+
+    case 'patients':
+        require_once __DIR__ . '/../views/patients.php';
         break;
 
     default:
