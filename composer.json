@@ -1,0 +1,7 @@
+{
+    "name": "arpan/my-php-app",
+    "description": "PHP app on Render",
+    "require": {
+        "phpmailer/phpmailer": "^6.10"
+    }
+}
