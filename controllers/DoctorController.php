@@ -1,22 +1,26 @@
 <?php
-require_once __DIR__ . '/../helpers/sessions.php';
-require_once __DIR__ . '/../helpers/validators.php';
-require_once __DIR__ . '/../models/Prescription.php';
+require_once __DIR__ . '/../models/Doctor.php';
+require_once __DIR__ . '/../models/Hospital.php';
 
-checkLogin('doctor');
+$doctorModel = new Doctor($pdo);
+$hospitalModel = new Hospital($pdo);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'prescribe') {
-    $ticket_id = intval($_POST['ticket_id']);
-    $diagnosis = sanitize($_POST['diagnosis']);
-    $checkups = sanitize($_POST['checkups']);
-    $medicines = sanitize($_POST['medicines']);
-    $email = sanitize($_POST['email']);
+$hospitals = $hospitalModel->all();
 
-    $prescription = new Prescription();
-    if ($prescription->create($ticket_id, $diagnosis, $checkups, $medicines, $email)) {
-        header("Location: ../views/doctor/dashboard.php?success=Prescription sent");
-    } else {
-        header("Location: ../views/doctor/dashboard.php?error=Failed to send prescription");
-    }
+// Handle Add
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
+    $doctorModel->add($_POST['hospital_id'], $_POST['name'], $_POST['specialty']);
+    header("Location: ?page=doctors");
     exit;
 }
+
+// Handle Delete
+if (isset($_GET['delete'])) {
+    $doctorModel->delete($_GET['delete']);
+    header("Location: ?page=doctors");
+    exit;
+}
+
+$doctors = $doctorModel->all();
+require_once __DIR__ . '/../views/doctors.php';
+?>

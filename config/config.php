@@ -1,22 +1,13 @@
 <?php
-class Database {
-    private $conn;
+$host = 'db.lkzqzqutzgswwillxhus.supabase.co';
+$db   = 'postgres';
+$user = 'postgres';   // change if needed
+$pass = 'Arpan@2009';       // change if needed
 
-    public function getConnection() {
-        // Supabase Postgres connection string
-        $host = "db.lkzqzqutzgswwillxhus.supabase.co";
-        $port = "5432";
-        $dbname = "postgres";
-        $user = "postgres";
-        $password = "Arpan@2009";
-
-        $connString = "host=$host port=$port dbname=$dbname user=$user password=$password sslmode=require";
-
-        $this->conn = pg_connect($connString);
-
-        if (!$this->conn) {
-            die("DB Connection Failed: " . pg_last_error());
-        }
-        return $this->conn;
-    }
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("DB Connection failed: " . $e->getMessage());
 }
+?>

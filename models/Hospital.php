@@ -1,21 +1,20 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
-
 class Hospital {
-    private $conn;
-    public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
+    private $pdo;
+    public function __construct($pdo) { $this->pdo = $pdo; }
+
+    public function all() {
+        return $this->pdo->query("SELECT * FROM hospitals")->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function login($email, $password) {
-        $result = pg_query_params($this->conn, "SELECT * FROM hospitals WHERE email=$1", [$email]);
-        if (pg_num_rows($result) > 0) {
-            $hospital = pg_fetch_assoc($result);
-            if (password_verify($password, $hospital['password'])) {
-                return $hospital;
-            }
-        }
-        return false;
+    public function add($name, $location) {
+        $stmt = $this->pdo->prepare("INSERT INTO hospitals (name, location) VALUES (?, ?)");
+        return $stmt->execute([$name, $location]);
+    }
+
+    public function delete($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM hospitals WHERE id=?");
+        return $stmt->execute([$id]);
     }
 }
+?>

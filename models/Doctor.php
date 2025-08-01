@@ -1,34 +1,23 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
-
 class Doctor {
-    private $conn;
-    public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
+    private $pdo;
+    public function __construct($pdo) { $this->pdo = $pdo; }
+
+    public function all() {
+        return $this->pdo->query("SELECT doctors.*, hospitals.name as hospital_name 
+                                  FROM doctors 
+                                  JOIN hospitals ON doctors.hospital_id = hospitals.id")
+                                  ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function login($email, $password) {
-        $result = pg_query_params($this->conn, "SELECT * FROM doctors WHERE email=$1", [$email]);
-        if (pg_num_rows($result) > 0) {
-            $doctor = pg_fetch_assoc($result);
-            if (password_verify($password, $doctor['password'])) {
-                return $doctor;
-            }
-        }
-        return false;
-    }
-
-    public function getAll($hospital_id) {
-        return pg_query_params($this->conn, "SELECT * FROM doctors WHERE hospital_id=$1", [$hospital_id]);
-    }
-
-    public function create($name, $email, $specialization, $password, $hospital_id) {
-        $query = "INSERT INTO doctors (name, email, specialization, password, hospital_id) VALUES ($1, $2, $3, $4, $5)";
-        return pg_query_params($this->conn, $query, [$name, $email, $specialization, $password, $hospital_id]);
+    public function add($hospital_id, $name, $specialty) {
+        $stmt = $this->pdo->prepare("INSERT INTO doctors (hospital_id, name, specialty) VALUES (?, ?, ?)");
+        return $stmt->execute([$hospital_id, $name, $specialty]);
     }
 
     public function delete($id) {
-        return pg_query_params($this->conn, "DELETE FROM doctors WHERE id=$1", [$id]);
+        $stmt = $this->pdo->prepare("DELETE FROM doctors WHERE id=?");
+        return $stmt->execute([$id]);
     }
 }
+?>
