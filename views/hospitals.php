@@ -7,36 +7,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="/">🏥 Hospital Project</a>
-        <a href="/" class="btn btn-outline-light btn-sm">Home</a>
-    </div>
-</nav>
-
 <div class="container mt-5">
-    <h1 class="mb-4 text-primary">Hospitals</h1>
-
-    <form method="post" class="row mb-4">
-        <div class="col-md-4"><input type="text" name="name" class="form-control" placeholder="Hospital Name" required></div>
-        <div class="col-md-4"><input type="text" name="location" class="form-control" placeholder="Location"></div>
-        <div class="col-md-4"><button type="submit" name="add" class="btn btn-success w-100">Add Hospital</button></div>
+    <h1 class="text-primary mb-4">Hospitals</h1>
+    <form method="post" class="row g-3 mb-4">
+        <div class="col-md-5"><input name="name" placeholder="Hospital Name" class="form-control" required></div>
+        <div class="col-md-5"><input name="location" placeholder="Location" class="form-control" required></div>
+        <div class="col-md-2"><button type="submit" name="add" class="btn btn-primary w-100">Add</button></div>
     </form>
 
-    <table class="table table-bordered bg-white shadow-sm">
+    <table class="table table-bordered">
         <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Action</th></tr></thead>
         <tbody>
-        <?php foreach ($hospitals as $h): ?>
-            <tr>
-                <td><?= $h['id'] ?></td>
-                <td><?= htmlspecialchars($h['name']) ?></td>
-                <td><?= htmlspecialchars($h['location']) ?></td>
-                <td><a href="?page=hospitals&delete=<?= $h['id'] ?>" class="btn btn-danger btn-sm">Delete</a></td>
-            </tr>
-        <?php endforeach; ?>
+            <?php foreach ($hospitals as $hospital): ?>
+                <tr>
+                    <td><?= $hospital['id'] ?></td>
+                    <td><?= htmlspecialchars($hospital['name']) ?></td>
+                    <td><?= htmlspecialchars($hospital['location']) ?></td>
+                    <td><a href="?page=hospitals&delete=<?= $hospital['id'] ?>" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
+    <a href="/" class="btn btn-secondary mt-3">🏠 Home</a>
 </div>
 </body>
 </html>
