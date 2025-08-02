@@ -6,14 +6,7 @@ $user = getenv('DB_USER') ?: 'postgres';
 $pass = getenv('DB_PASS') ?: 'Arpan@2009';
 
 try {
-    if (getenv('DB_TYPE') === 'pgsql') {
-        // Postgres (Supabase)
-        $dsn = "pgsql:host=$host;port=$port;dbname=$db";
-    } else {
-        // MySQL (Default)
-        $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8";
-    }
-
+    $dsn = "pgsql:host=$host;port=$port;dbname=$db";
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
